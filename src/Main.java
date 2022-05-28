@@ -10,7 +10,7 @@ public class Main {
         findNumberOfMatchesPlayedPerYear(matches);
         findMatchesWonByEachTeamOverYears(matches);
         findExtraRunsConcededPerTeamIn2016(matches, deliveries);
-//        findEconomicalBowlerOf2015(matches, deliveries);
+        findEconomicalBowlerOf2015(matches, deliveries);
 //        findTotalSixesByTeams(deliveries);
     }
 
@@ -139,5 +139,58 @@ public class Main {
         }
         System.out.println("Extra runs conceded in 2016");
         System.out.println(extraRuns);
+    }
+
+    public static void findEconomicalBowlerOf2015(List<Match> matches, List<Delivery> deliveries) {
+        HashMap<String, Integer> runsGiven = new HashMap<String, Integer>();
+        HashMap<String, Double> oversBowled = new HashMap<String, Double>();
+        SortedMap<String, Double> economyMap = new TreeMap<String, Double>();
+        Map<Double, String> economy = new TreeMap<>();
+
+
+        Iterator<Match> matchesPlayed = matches.iterator();
+        while (matchesPlayed.hasNext()) {
+            Match match = matchesPlayed.next();
+            if (match.getYear() == 2015) {
+                Iterator<Delivery> totalDeliveries = deliveries.iterator();
+                while (totalDeliveries.hasNext()) {
+                    Delivery delivery = totalDeliveries.next();
+                    if (delivery.getMatchId() == match.getMatchId()) {
+                        if (runsGiven.containsKey(delivery.getBowler())) {
+                            runsGiven.put(delivery.getBowler(), runsGiven.get(delivery.getBowler()) + delivery.getTotalRuns());
+                        } else runsGiven.put(delivery.getBowler(), delivery.getTotalRuns());
+                    }
+                }
+            }
+        }
+        Iterator<Match> matchesIterator2 = matches.iterator();
+        while (matchesIterator2.hasNext()) {
+            Match match = matchesIterator2.next();
+            if (match.getYear() == 2015) {
+                Iterator<Delivery> totalDeliveries = deliveries.iterator();
+                while (totalDeliveries.hasNext()) {
+                    Delivery delivery = totalDeliveries.next();
+                    if (delivery.getMatchId() == match.getMatchId()) {
+                        if (oversBowled.containsKey(delivery.getBowler())) {
+                            oversBowled.put(delivery.getBowler(), oversBowled.get(delivery.getBowler()) + 1.0);
+                        } else oversBowled.put(delivery.getBowler(), 1.0);
+                    }
+                }
+            }
+        }
+        String[] bowler = oversBowled.keySet().toArray(new String[0]);
+        for (int i = 0; i < bowler.length; i++) {
+            if (oversBowled.containsKey(bowler[i])) {
+                double runs = oversBowled.get(bowler[i]);
+                oversBowled.put(bowler[i], (runs / 6));
+            }
+        }
+        for (int j = 0; j < bowler.length; j++) {
+            double economyRate = runsGiven.get(bowler[j]) / oversBowled.get(bowler[j]);
+            economyMap.put(bowler[j], economyRate);
+            economy.put(economyRate, bowler[j]);
+        }
+        System.out.println("Most Economical Bowler of 2015 : ");
+        System.out.println(economy);
     }
 }
