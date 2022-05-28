@@ -11,7 +11,7 @@ public class Main {
         findMatchesWonByEachTeamOverYears(matches);
         findExtraRunsConcededPerTeamIn2016(matches, deliveries);
         findEconomicalBowlerOf2015(matches, deliveries);
-//        findTotalSixesByTeams(deliveries);
+        findTotalSixesByTeams(deliveries);
     }
 
     public static List<Match> getMatchesData() {
@@ -30,7 +30,6 @@ public class Main {
             ResultSet rs = st.executeQuery(query);
 
             while (rs.next()) {
-//            String matchData = rs.getString(2);
                 Match match = new Match();
 
                 int matchId = Integer.parseInt(rs.getString(1));
@@ -41,8 +40,6 @@ public class Main {
                 match.setWinner(rs.getString(11));
                 matches.add(match);
 
-//            st.close();
-//            con.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -192,5 +189,20 @@ public class Main {
         }
         System.out.println("Most Economical Bowler of 2015 : ");
         System.out.println(economy);
+    }
+
+    public static void findTotalSixesByTeams(List<Delivery> deliveries) {
+        HashMap<String, Integer> sixes = new HashMap<String, Integer>();
+        Iterator<Delivery> totalDelivery = deliveries.iterator();
+        while (totalDelivery.hasNext()) {
+            Delivery delivery = totalDelivery.next();
+            if (delivery.getBatsmanRuns() == 6) {
+                if (sixes.containsKey(delivery.getBattingTeam())) {
+                    sixes.put(delivery.getBattingTeam(), sixes.get(delivery.getBattingTeam()) + 1);
+                } else sixes.put(delivery.getBattingTeam(), 1);
+            }
+        }
+        System.out.println("Total number of sixes by each teams over years : ");
+        System.out.println(sixes);
     }
 }
