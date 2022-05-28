@@ -9,7 +9,7 @@ public class Main {
 
         findNumberOfMatchesPlayedPerYear(matches);
         findMatchesWonByEachTeamOverYears(matches);
-//        findExtraRunsConceededPerTeamIn2016(matches, deliveries);
+        findExtraRunsConcededPerTeamIn2016(matches, deliveries);
 //        findEconomicalBowlerOf2015(matches, deliveries);
 //        findTotalSixesByTeams(deliveries);
     }
@@ -103,6 +103,7 @@ public class Main {
         System.out.println(matchesPerSeason);
 
     }
+
     public static void findMatchesWonByEachTeamOverYears(List<Match> matches) {
         Map<String, Integer> matchesWonByTeam = new HashMap<String, Integer>();
         Iterator<Match> totalMatches = matches.iterator();
@@ -116,5 +117,27 @@ public class Main {
         }
         System.out.println("Matches won by teams over years");
         System.out.println(matchesWonByTeam);
+    }
+
+    public static void findExtraRunsConcededPerTeamIn2016(List<Match> matches, List<Delivery> deliveries) {
+        HashMap<String, Integer> extraRuns = new HashMap<String, Integer>();
+        Iterator<Match> matchIterator = matches.iterator();
+        while (matchIterator.hasNext()) {
+            Match match = matchIterator.next();
+            if (match.getYear() == 2016) {
+                Iterator<Delivery> deliveryIterator = deliveries.iterator();
+                while (deliveryIterator.hasNext()) {
+                    Delivery delivery = deliveryIterator.next();
+                    if (delivery.getMatchId() == match.getMatchId()) {
+                        if (extraRuns.containsKey(delivery.getBowlingTeam())) {
+                            extraRuns.put(delivery.getBowlingTeam(), extraRuns.get(delivery.getBowlingTeam()) + delivery.getExtraRuns());
+                        } else extraRuns.put(delivery.getBowlingTeam(), delivery.getExtraRuns());
+
+                    }
+                }
+            }
+        }
+        System.out.println("Extra runs conceded in 2016");
+        System.out.println(extraRuns);
     }
 }
