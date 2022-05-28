@@ -8,7 +8,7 @@ public class Main {
         List<Delivery> deliveries = getDeliveriesData();
 
         findNumberOfMatchesPlayedPerYear(matches);
-//        findMatchesWonByEachTeamOverYears(matches);
+        findMatchesWonByEachTeamOverYears(matches);
 //        findExtraRunsConceededPerTeamIn2016(matches, deliveries);
 //        findEconomicalBowlerOf2015(matches, deliveries);
 //        findTotalSixesByTeams(deliveries);
@@ -102,5 +102,19 @@ public class Main {
         System.out.println("Number Of Matches Played Per Season");
         System.out.println(matchesPerSeason);
 
+    }
+    public static void findMatchesWonByEachTeamOverYears(List<Match> matches) {
+        Map<String, Integer> matchesWonByTeam = new HashMap<String, Integer>();
+        Iterator<Match> totalMatches = matches.iterator();
+        while (totalMatches.hasNext()) {
+            String wins = totalMatches.next().getWinner();
+            if (matchesWonByTeam.containsKey(wins)) {
+                matchesWonByTeam.put(wins, matchesWonByTeam.get(wins) + 1);
+            } else {
+                matchesWonByTeam.put(wins, 1);
+            }
+        }
+        System.out.println("Matches won by teams over years");
+        System.out.println(matchesWonByTeam);
     }
 }
