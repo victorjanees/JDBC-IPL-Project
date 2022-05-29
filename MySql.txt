@@ -1,0 +1,16 @@
+SELECT * FROM IPL.Matches;
+
+-- Scenario-1:
+select season , count(season) as 'Matches_Played' from IPL.Matches group by season having count(season) >=0;
+
+-- Scenario-2:
+select winner as 'Teams' , count(winner) as 'Matches_Won' from IPL.Matches group by winner having count(season) >=0;
+
+-- Scenario-3:
+select Matches.season , Deliveries.bowling_team , sum(Deliveries.extra_runs) as 'Extra Runs' from Deliveries join Matches on Matches.id = Deliveries.match_id where Matches.season = 2016 group by Deliveries.bowling_team ;
+
+-- Scenario-4:
+select Matches.season , Deliveries.bowler , sum(Deliveries.total_runs) / (count(Deliveries.total_runs) / 6) as 'Economy' from Deliveries join Matches on Matches.id = Deliveries.match_id where Matches.season = 2015 group by Deliveries.bowler order by 'Economy';
+
+-- scenario-5:
+select batting_team as 'Teams' , count(batsman_runs) as  'Total sixes' from IPL.Deliveries where batsman_runs = 6 group by batting_team ;
