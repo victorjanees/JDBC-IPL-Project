@@ -1,4 +1,4 @@
-SELECT * FROM IPL.Matches;
+MySQL Queries:
 
 -- Scenario-1:
 select season , count(season) as 'Matches_Played' from IPL.Matches group by season having count(season) >=0;
@@ -14,3 +14,20 @@ select Matches.season , Deliveries.bowler , sum(Deliveries.total_runs) / (count(
 
 -- scenario-5:
 select batting_team as 'Teams' , count(batsman_runs) as  'Total sixes' from IPL.Deliveries where batsman_runs = 6 group by batting_team ;
+
+PostgreSQL Queries:
+
+--scenario-1:
+select season , count(season) as "matches_Played" from matches group by season having count(season) >=0;
+
+--scenario-2:
+select winner as "Teams" , count(winner) as "Matches_Won" from matches group by winner having count(season) >=0;
+
+--scenario-3:
+select bowling_team,sum(extra_runs) as extra_runs from matches join deliveries on matches.id=deliveries.match_id where matches.season=2016 group by bowling_team;
+
+--scenario-4:
+select bowler,(sum(deliveries.total_runs)/(count(*)/6.0)) as economy_rate_of_bowler from deliveries INNER JOIN matches ON deliveries.match_id = matches.id where matches.season=2015 group by deliveries.bowler order by economy_rate_of_bowler asc; 
+
+--scenario-5:
+select batting_team as Teams , count(batsman_runs) as  Total_sixes from deliveries where batsman_runs = 6 group by Teams ;
